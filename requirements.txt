@@ -1,0 +1,7 @@
+numpy
+pytest
+numdifftools
+pybind11
+ipykernel
+mugrade
+ziglang==0.12.1; sys_platform == "win32"

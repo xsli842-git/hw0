@@ -1,0 +1,11 @@
+.venv/
+.uv-cache/
+.zig-cache/
+.ipython/
+.tmp/
+.pytest_cache/
+pytest-cache-files-*/
+__pycache__/
+*.pyd
+*.pdb
+*.lib
