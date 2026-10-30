@@ -2,7 +2,6 @@ import numpy as np
 import sys
 import numdifftools as nd
 sys.path.append("./src")
-import mugrade
 from simple_ml import *
 try:
     from simple_ml_ext import *
@@ -20,6 +19,7 @@ def test_add():
                                np.array([4,6]))
 
 def submit_add():
+    import mugrade
     mugrade.submit(add(1,2))
     mugrade.submit(add(4.5, 3.2))
     mugrade.submit(type(add(3,2)))
@@ -45,6 +45,7 @@ def test_parse_mnist():
 
 
 def submit_parse_mnist():
+    import mugrade
     X,y = parse_mnist("data/t10k-images-idx3-ubyte.gz",
                       "data/t10k-labels-idx1-ubyte.gz")
     mugrade.submit(X.dtype)
@@ -70,6 +71,7 @@ def test_softmax_loss():
 
 
 def submit_softmax_loss():
+    import mugrade
     X,y = parse_mnist("data/t10k-images-idx3-ubyte.gz",
                       "data/t10k-labels-idx1-ubyte.gz")
     np.random.seed(0)
@@ -101,6 +103,7 @@ def test_softmax_regression_epoch():
 
 
 def submit_softmax_regression_epoch():
+    import mugrade
     X,y = parse_mnist("data/t10k-images-idx3-ubyte.gz",
                       "data/t10k-labels-idx1-ubyte.gz")
 
@@ -149,6 +152,7 @@ def test_nn_epoch():
 
 
 def submit_nn_epoch():
+    import mugrade
     X,y = parse_mnist("data/train-images-idx3-ubyte.gz",
                       "data/train-labels-idx1-ubyte.gz")
 
@@ -192,6 +196,7 @@ def test_softmax_regression_epoch_cpp():
 
 
 def submit_softmax_regression_epoch_cpp():
+    import mugrade
     X,y = parse_mnist("data/t10k-images-idx3-ubyte.gz",
                       "data/t10k-labels-idx1-ubyte.gz")
 

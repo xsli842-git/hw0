@@ -3,5 +3,5 @@ pytest
 numdifftools
 pybind11
 ipykernel
-mugrade
+# mugrade is optional and only needed for online submissions.
 ziglang==0.12.1; sys_platform == "win32"

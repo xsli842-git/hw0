@@ -33,6 +33,79 @@ void softmax_regression_epoch_cpp(const float *X, const unsigned char *y,
      */
 
     /// BEGIN YOUR CODE
+    int i,j,a, b;
+
+    for (i = 0; i < m/batch; i++)
+    {
+      float *Z = new float[batch * k]{};
+      float *Xt = new float[n * m]{};
+      float *d_theta = new float[n * k]{};
+      float *sum_exp = new float[batch]{};
+
+      for (j = i*batch; j < (i+1) * batch; j++)
+      {
+        for ( a = 0; a < k; a++)
+        {
+          for (b = 0; b < n; b++)
+          {
+            Z[(j- i*batch) * k + a] += X[j*n + b] * theta[  b * k + a];
+          }
+        }
+
+        for (b = 0; b < n; b++)
+        {
+          Xt[b * m + (j- i*batch)] = X[j * n + b];
+        }
+      }
+
+      for (j = 0; j < batch; j++)
+      {
+        for (a = 0; a < k; a ++)
+        {
+            Z[j * k + a] = std::exp(Z[j * k + a] );
+            sum_exp[j] += Z[j * k + a];
+        }
+      }
+
+      for (j = 0; j < batch; j++)
+      {
+        for (a = 0; a < k; a ++)
+        {
+            Z[j * k + a] /= sum_exp[j];
+        }
+      }
+
+      for (j = i*batch; j < (i+1) * batch; j++)
+      {
+        for ( a = 0; a < k; a++)
+        {
+          Z[(j- i*batch) * k + a] -= (y[j] == a)? 1 : 0;
+        }
+      }
+
+      for (j = 0; j < batch; j++)
+      {
+        for (a = 0; a < k; a ++)
+        {
+          for (b = 0; b < n; b++)
+          {
+            d_theta[b * k + a] += Xt[b * m + j] * Z[j * k + a];
+          }
+        }
+      }
+      for (a = 0; a < k; a ++)
+      {
+        for (b = 0; b < n; b++)
+        {
+          theta[b * k + a] -= lr * d_theta[b * k + a]/batch;
+        }
+      }
+      delete [] Z;
+      delete [] Xt;
+      delete [] d_theta;
+      delete [] sum_exp;
+    }
+
 
     /// END YOUR CODE
 }

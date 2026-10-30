@@ -85,8 +85,14 @@ def softmax_loss(Z, y):
         Average softmax loss over the sample.
     """
     ### BEGIN YOUR CODE
-    pass
+    res = np.log(np.sum(np.exp(Z), axis=1))
+    res2 = Z[np.arange(Z.shape[0]), y]
+    return np.mean(res - res2)
     ### END YOUR CODE
+
+def softmax(Z):
+    res = np.sum(np.exp(Z), axis=1)
+    return np.exp(Z) / np.expand_dims(res, axis=1)
 
 
 def softmax_regression_epoch(X, y, theta, lr = 0.1, batch=100):
@@ -108,7 +114,13 @@ def softmax_regression_epoch(X, y, theta, lr = 0.1, batch=100):
         None
     """
     ### BEGIN YOUR CODE
-    pass
+    for i in range(0, X.shape[0]//batch):
+        X_batch = X[i*batch:(i+1)*batch]
+        y_batch = y[i*batch:(i+1)*batch]
+        Z = softmax( X_batch @ theta)
+        y_one_hot = np.eye(theta.shape[1], dtype=np.float32)[y_batch]
+        deriv = (np.transpose(X_batch) @(Z - y_one_hot))
+        theta -= lr * deriv/batch
     ### END YOUR CODE
 
 
@@ -135,7 +147,18 @@ def nn_epoch(X, y, W1, W2, lr = 0.1, batch=100):
         None
     """
     ### BEGIN YOUR CODE
-    pass
+    for i in range(0, X.shape[0]//batch):
+        X_batch = X[i * batch : (i+1) * batch]
+        y_batch = y[i * batch : (i+1) * batch]
+        Z1 = np.maximum(X_batch @ W1, 0)
+        O1 = np.exp(Z1 @ W2)
+        G2 = O1/np.sum(O1, axis= 1, keepdims=True) - np.eye(W2.shape[1])[y_batch]
+        G1 = (Z1 > 0) * (G2 @ np.transpose(W2))
+        delta_W1 = (X_batch.T @ G1)/batch
+        delta_W2 = (Z1.T @ G2)/batch
+
+        W1 -= lr * delta_W1
+        W2 -= lr * delta_W2
     ### END YOUR CODE
 
 
